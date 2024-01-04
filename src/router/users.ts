@@ -57,7 +57,7 @@ users.post('/users', async (req: Request, res: any) => {
         };
 
         // Insert the new user into the database
-        const result = await client
+        await client
             .db(DB_NAME)
             .collection(DB_COLLECTION_USERS)
             .insertOne(newUser);
