@@ -30,9 +30,9 @@ users.get("/users", async (req: Request, res: Response) => {
     }
 }, cors());
 
-users.post('/users/:userName', async (req: Request, res: any) => {
+users.post('/users', async (req: Request, res: any) => {
     try {
-        const { userName } = req.body;
+        const { userName } = req.body.name;
 
         // Validate if the user with the given username already exists
         const existingUser = await client
