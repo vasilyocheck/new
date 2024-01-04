@@ -1,10 +1,10 @@
 import express from 'express';
 import path from "path";
 import cors from "cors"
-import dotenv from 'dotenv'
-import {MongoClient} from "mongodb";
+const { MongoClient } = require('mongodb');
 import users from "./router/users";
-dotenv.config()
+import dotenv from 'dotenv'
+dotenv.config();
 
 export const app = express();
 app.use(express.json());
@@ -19,5 +19,5 @@ app.use(cors())
 app.use(users)
 //app.use(userPoints);
 //app.use(todolistPoints);
-const uri = 'mongodb+srv://vasilymedvedev1986:helloMongoDB@cluster0.7kaxmgh.mongodb.net/?retryWrites=true&w=majority'
+export const uri = process.env.URI_MONGO;
 export const client = new MongoClient(uri);
