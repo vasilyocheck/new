@@ -1,7 +1,6 @@
-import { Request, Response, Router } from "express";
-import { ObjectId } from "mongodb";
+import {Request, Response, Router} from "express";
 import cors from "cors";
-import { client } from "../app";
+import {client} from "../app";
 
 const users = Router();
 const DB_NAME = "social";
@@ -33,7 +32,7 @@ users.get("/users", async (req: Request, res: Response) => {
 
 users.post('/users/:userName', async (req: Request, res: any) => {
     try {
-        const { userName } = req.params;
+        const { userName } = req.body;
 
         // Validate if the user with the given username already exists
         const existingUser = await client
