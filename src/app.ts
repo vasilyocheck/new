@@ -17,7 +17,5 @@ app.use(express.static(path.resolve(__dirname, "../src/static")));
 // Обязательно
 app.use(cors())
 app.use(users)
-//app.use(userPoints);
-//app.use(todolistPoints);
 export const uri = process.env.URI_MONGO;
 export const client = new MongoClient(uri);

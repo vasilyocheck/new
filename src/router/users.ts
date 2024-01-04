@@ -10,10 +10,7 @@ const DB_COLLECTION_USERS = "users";
 // Получение тудулистов
 users.get("/users", async (req: Request, res: Response) => {
     try {
-        // подключение к базе данных
-        //const users = (await client.connect()).db(DB_NAME).collection(DB_COLLECTION_USERS);
-
-        // Получение всех тудулистов
+        // Подключение к базе данных
         const usersCollection = (await client.connect()).db(DB_NAME).collection(DB_COLLECTION_USERS);
 
         // Получение всех пользователей
@@ -33,5 +30,57 @@ users.get("/users", async (req: Request, res: Response) => {
         });
     }
 }, cors());
+
+users.post('/users/:userName', async (req: Request, res: any) => {
+    try {
+        const { userName } = req.params;
+
+        // Validate if the user with the given username already exists
+        const existingUser = await client
+            .db(DB_NAME)
+            .collection(DB_COLLECTION_USERS)
+            .findOne({ name: userName });
+
+        if (existingUser) {
+            return res.status(400).json({
+                resultCode: 1,
+                errorMessage: ["User with this username already exists"],
+            });
+        }
+
+        // If the user does not exist, create a new user
+        const newUser = {
+            name: userName,
+            age: 20,
+            sex: 'male'
+            // Add other user properties as needed
+        };
+
+        // Insert the new user into the database
+        const result = await client
+            .db(DB_NAME)
+            .collection(DB_COLLECTION_USERS)
+            .insertOne(newUser);
+
+        if (result.insertedCount === 1) {
+            res.json({
+                resultCode: 0,
+                errorMessage: [],
+                data: newUser,
+            });
+        } else {
+            res.status(500).json({
+                resultCode: 1,
+                errorMessage: ["Failed to create a new user"],
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            resultCode: 1,
+            errorMessage: ["Error while processing the request"],
+        });
+    }
+});
 
 export default users;

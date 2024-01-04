@@ -1,8 +1,5 @@
 import {app, client} from './app'
-//import userPoints from "./router/users"
-//import todolistPoints from "./router/todolist"
 import cors from "cors"
-
 
 
 app.use(cors({
@@ -12,13 +9,7 @@ app.use(cors({
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders:"Content-Type",
     credentials: true,
-
 }))
-
-
-//app.use('/users', userPoints);
-//app.use('/todolist',todolistPoints)
-
 
 const port = process.env.PORT || 3001
 const startApp = async ()=> {
