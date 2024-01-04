@@ -31,11 +31,12 @@ users.get("/users", async (req: Request, res: Response) => {
 }, cors());
 
 users.post('/users', async (req: Request, res: any) => {
+    const { name, age, sex } = req.body;
     try {
-        const { userName } = req.body.name;
+        console.log(name);
 
         // Validate if the user with the given username already exists
-        const existingUser = await client
+        /*const existingUser = await client
             .db(DB_NAME)
             .collection(DB_COLLECTION_USERS)
             .findOne({ name: userName });
@@ -45,13 +46,13 @@ users.post('/users', async (req: Request, res: any) => {
                 resultCode: 1,
                 errorMessage: ["User with this username already exists"],
             });
-        }
+        }*/
 
         // If the user does not exist, create a new user
         const newUser = {
-            name: userName,
-            age: 20,
-            sex: 'male'
+            name,
+            age,
+            sex
             // Add other user properties as needed
         };
 
@@ -61,18 +62,13 @@ users.post('/users', async (req: Request, res: any) => {
             .collection(DB_COLLECTION_USERS)
             .insertOne(newUser);
 
-        if (result.insertedCount === 1) {
+
             res.json({
                 resultCode: 0,
                 errorMessage: [],
                 data: newUser,
             });
-        } else {
-            res.status(500).json({
-                resultCode: 1,
-                errorMessage: ["Failed to create a new user"],
-            });
-        }
+
     } catch (error) {
         console.log(error);
         res.status(500).json({
